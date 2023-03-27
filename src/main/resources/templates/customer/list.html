@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDEX</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <link rel="stylesheet" href="/assets/css/preview-image.css" />
+
+</head>
+<body>
+    
+    <!-- Show, create -->
+    <div class="container" >
+        <header>
+            <div class="d-flex justify-content-lg-around">
+                <div style="margin-top:10px">
+                    <h4>Customer's infomation</h4>
+                </div>
+                <!--        navbar            -->
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+
+                        <ul class="nav navbar-right float-right list-inline ">
+                                <!--            History                    -->
+<!--                            <li class="d-none d-sm-block">-->
+<!--                                <button type="button" style="margin: 5px" class="btn btn-outline-primary " id="btnHistoryTransfer">-->
+<!--                                    Transfer money infomation</button>-->
+<!--                            </li>-->
+                            <!--        Show Create            -->
+                            <li class="dropdown d-none d-sm-block">
+                                <button type="button" style="margin: 5px" class="btn btn-outline-primary" id = "btnCreate">
+                                    Create new customer</button>
+                            </li>
+
+                            <li class="dropdown show">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-info dropdown-toggle" style="margin: 5px" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span th:text="${fullName}"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+<!--                                            <li><a class="dropdown-item" href="#">Action</a></li>-->
+<!--                                            <li><a class="dropdown-item" href="#">Another action</a></li>-->
+                                        <li><a class="dropdown-item" href="/logout">
+                                           Log out
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- show -->
+        <div class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        
+                        <table class="table table-hover m-b-0" id="tbCustomers">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th></th>
+                                <th>Full name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Province</th>
+                                <th>Disstrict</th>
+                                <th>Ward</th>
+                                <th>Address</th>
+                            </tr>
+                            </thead>
+
+                            <tbody >
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- create -->
+    <div class="modal fade" id="modalCreateCustome" tabindex="-1" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="">Modal create customer</h1>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal" aria-label="Close">x</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmCreateCustomer" method="post">
+                            <div class="row g-3">
+                                <div class="col-md-7">
+                                    <div class="form-group col-md-12">
+                                        <label>Full name</label>
+                                        <input type="text" class="form-control" id="fullNameCre" >
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label>Phone</label>
+                                        <input type="tel" class="form-control" id="phoneCre" >
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" id="emailCre" >
+                                    </div>
+                                    <div class="form-group col-md-6" style="float: left;">
+                                        <label>Province</label>
+                                        <select id="provinceCre" class="form-control" >
+
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6" style="float: left;">
+                                        <label>Distrist</label>
+                                        <select id="distristCre" class="form-control distrist">
+
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6" style="float: left;">
+                                        <label>Ward</label>
+                                        <select id="wardCre" class="form-control ward">
+
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6" style="float: left;">
+                                        <label>Address</label>
+                                        <input type="text" class="form-control" id="addressCre" >
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <section style="height: 100%">
+                                        <div class="wrapper active" style="height: 100%">
+                                            <div class="image-preview">
+                                                <canvas id="canvas" style="display: none;"></canvas>
+                                            </div>
+                                            <div class="content">
+                                                <div class="icon">
+                                                    <i class="fas fa-cloud-upload-alt"></i>
+                                                </div>
+                                                <div class="text">
+                                                    No file chosen, yet!
+                                                </div>
+                                                <div class="text">
+                                                    Max file size = 2MB
+                                                </div>
+                                            </div>
+                                            <div class="clear-image-preview">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                            <div class="file-name">
+                                                Change image
+                                            </div>
+                                        </div>
+                                        <input type="file" id="imageFile" accept="image/jpeg, image/png" hidden="">
+                                    </section>
+
+
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"  class="btn btn-outline-info waves-effect waves-light" data-bs-dismiss="modal">
+                            <i class="fas fa-undo-alt"></i> Close
+                        </button>
+
+                        <button type="button" id="btnSaveCreate" class="btn btn-outline-success waves-effect waves-light" >
+                            <i class="fas fa-user-plus"></i> Create customer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Deposit -->
+    <div class="modal fade" id="modalDeposit" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" >Modal deposit</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmDepositCustomer" method="post">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label>Full name</label>
+                            <input type="text" class="form-control" id="fullNameDep" readonly>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Phone</label>
+                            <input type="email" class="form-control" id="phoneDep" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group col-lg-6">
+                            <label>Curren's balances</label>
+                            <input type="text" class="form-control" id="balancesDep" readonly>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Transaction amount</label>
+                            <input type="text" class="form-control" id="transactionAmount" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-outline-info waves-effect waves-light" data-bs-dismiss="modal">
+                    <i class="fas fa-undo-alt"></i> Close
+                </button>
+
+                <button type="button" id="btnDeposit" class="btn btn-outline-success waves-effect waves-light" >
+                    <i class="fas fa-user-plus"></i> Save
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Update -->
+    <div class="modal fade" id="modalUpdate" tabindex="-1" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" >Modal update customer</h1>
+            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <div class="modal-body">
+                <form id="frmUpdateCustomer" method="post">
+                    <div class="row  mb-3">
+
+                        <div class="col-md-7">
+                            <div class="form-group col-md-12">
+                                <div class="form-group col-lg-12">
+                                    <label>Full name</label>
+                                    <input type="text" class="form-control" id="fullNameUpda" >
+                                </div>
+
+                                <div class="form-group col-lg-12">
+                                    <label>Phone</label>
+                                    <input type="tel" class="form-control" id="phoneUpda" >
+                                </div>
+
+                                <div class="form-group col-lg-12">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" id="emailUpda" >
+                                </div>
+
+                                <input type="hidden" id="locationRegionIdUp">
+                                <div class="form-group col-lg-6" style="float: left;">
+                                    <label>Province</label>
+                                    <select id="provinceUpda" class="form-control" >
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-lg-6" style="float: left;">
+                                    <label>Distrist</label>
+                                    <select id="distristUpda" class="form-control distrist">
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-lg-6" style="float: left;">
+                                    <label>Ward</label>
+                                    <select id="wardUpda" class="form-control ward">
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-lg-6" style="float: left;">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" id="addressUpda" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <section style="height: 100%">
+                                <div class="wrapper active" style="height: 100%">
+                                    <div class="image-preview">
+                                        <canvas id="canvasUp" style="display: none;"></canvas>
+                                    </div>
+                                    <div class="content">
+                                        <div class="icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <div class="text">
+                                            No file chosen, yet!
+                                        </div>
+                                        <div class="text">
+                                            Max file size = 2MB
+                                        </div>
+                                    </div>
+                                    <div class="clear-image-preview">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        Change image
+                                    </div>
+                                </div>
+                                <input type="file" id="imageFileUp" accept="image/jpeg, image/png" hidden="">
+                            </section>
+
+                        </div>
+
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-outline-info waves-effect waves-light" data-bs-dismiss="modal">
+                    <i class="fas fa-undo-alt"></i> Close
+                </button>
+
+                <button type="button" id="btnSaveUpdate" class="btn btn-outline-success waves-effect waves-light" >
+                    <i class="fas fa-user-plus"></i> Update
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Withdraw -->
+    <div class="modal fade" id="modalWithdraw" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" >Modal withdraw</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmWithdrawCustomer" method="post">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label>Full name</label>
+                            <input type="text" class="form-control" id="fullNameWithdraw" readonly>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Phone</label>
+                            <input type="email" class="form-control" id="phoneWithdraw" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group col-lg-6">
+                            <label>Curren's balances</label>
+                            <input type="text" class="form-control" id="balancesWithdraw" readonly>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Transaction amount</label>
+                            <input type="text" class="form-control" id="withdrawAmount" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-outline-info waves-effect waves-light" data-bs-dismiss="modal">
+                    <i class="fas fa-undo-alt"></i> Close
+                </button>
+
+                <button type="button" id="btnWithdraw" class="btn btn-outline-success waves-effect waves-light" >
+                    <i class="fas fa-user-plus"></i> Save
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Transfer -->
+    <div class="modal fade" id="modalTransfer" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal Transfer</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmTransferCustomer" method="post">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label>Sender's name</label>
+                            <input type="text" class="form-control" id="senderName" readonly>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Receiver's name</label>
+                            <select  id="receiverName" class="form-control">
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group col-lg-6">
+                            <label>Current's sender balances</label>
+                            <input type="text" class="form-control" id="balancesSender" readonly>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Transfer amount</label>
+                            <input type="text" class="form-control" id="transferTransactionAmount" >
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="form-group col-lg-6">
+                            <label>Fees (%)</label>
+                            <input type="text" class="form-control" id="feesTransfer" value="10" readonly>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Transaction amount</label>
+                            <input type="text" class="form-control" id="transactionAmountTotal" readonly>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-outline-info waves-effect waves-light" data-bs-dismiss="modal">
+                    <i class="fas fa-undo-alt"></i> Close
+                </button>
+
+                <button type="button" id="btnTransfer" class="btn btn-outline-success waves-effect waves-light" >
+                    <i class="fas fa-user-plus"></i> Transfer
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Action  -->
+    <!-- Large modal -->
+    <div id="modalAction" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content flex-row d-flex justify-content-around" id="crudAction">
+            </div>
+        </div>
+    </div>
+
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/assets/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- thu vien sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="/assets/js/AppBase.js"></script>
+
+    <script>
+
+
+        let currentCustomerId;
+
+        const page = {
+            urls:{
+                getAllCustomers: AppBase.API_CUSTOMER,
+                findCustomerById: AppBase.API_CUSTOMER,
+                incrementBalance: AppBase.API_CUSTOMER,
+                decreaseBalance: AppBase.API_CUSTOMER,
+                doDelete: AppBase.API_CUSTOMER,
+                doCreate: AppBase.API_CUSTOMER,
+                doUpdate: AppBase.API_CUSTOMER,
+                deposit: AppBase.API_DEPOSIT,
+                doUpdateWithAvatar: AppBase.API_CUSTOMER + '/update-with-avatar',
+                withdraw: AppBase.API_WITHDRAW,
+                transfer: AppBase.API_TRANSFER
+            },
+            elements:{},
+            loadData:{},
+            commands:{},
+            dialogs:{
+                elements: {},
+                loadData: {},
+                commands: {}
+            }
+        }
+
+        page.commands.alertError = function (message){
+            Swal.fire({
+                icon: 'error',
+                title: 'error' ,
+                text: message,
+            })
+        }
+
+        page.commands.alertSuccess = function (message){
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+
+        page.elements.btnCreate = $('#btnCreate');
+        page.elements.modalCRUDAction = $('#modalAction');
+        page.dialogs.elements.showCRUDAction = $('#crudAction');
+
+        
+
+        page.dialogs.elements.btnDeposit = $("#btnDeposit");
+        page.dialogs.elements.modalDeposit = $("#modalDeposit");
+        page.dialogs.elements.frmDeposit = $('#frmDepositCustomer');
+        page.dialogs.elements.fullNameDeposit = $('#fullNameDep');
+        page.dialogs.elements.phoneDeposit = $('#phoneDep');
+        page.dialogs.elements.balanceDeposit = $('#balancesDep');
+        page.dialogs.elements.transactioneAmounDeposit = $('#transactionAmount');
+        
+        
+        page.elements.btnWithdraw = $("#btnWithdraw");
+        page.elements.btnTransfer = $("#btnTransfer");
+        
+
+        page.dialogs.elements.btnUpdate = $("#btnSaveUpdate");
+        page.dialogs.elements.modalUpdate = $('#modalUpdate');
+        page.dialogs.elements.frmUpdateCustomer = $('#frmUpdateCustomer');
+        page.dialogs.elements.fullNameUpdate = $('#fullNameUpda');
+        page.dialogs.elements.emailUpdate = $('#emailUpda');
+        page.dialogs.elements.phoneUpdate = $('#phoneUpda');
+        page.dialogs.elements.addressUpdate = $('#addressUpda');
+        page.dialogs.elements.provinceUpdate = $('#provinceUpda');
+        page.dialogs.elements.distristUpdate = $('#distristUpda');
+        page.dialogs.elements.wardUpdate = $('#wardUpda');
+        page.dialogs.elements.locationRegionIdUpdate = $('#locationRegionIdUp');
+
+        page.dialogs.elements.modalCreate = $('#modalCreateCustome');
+        page.dialogs.elements.frmCreateCustomer = $('#frmCreateCustomer');
+        page.dialogs.elements.fullNameCreateCustomer = $('#fullNameCre');
+        page.dialogs.elements.phoneCreateCustomer = $('#phoneCre');
+        page.dialogs.elements.emailCreateCustomer = $('#emailCre');
+        page.dialogs.elements.provinceCreateCustomer = $('#provinceCre');
+        page.dialogs.elements.distristCreateCustomer = $('#distristCre');
+        page.dialogs.elements.wardCreateCustomer = $('#wardCre');
+        page.dialogs.elements.addressCreateCustomer = $('#addressCre');
+        page.dialogs.elements.btnSaveCreate = $('#btnSaveCreate');
+
+        page.dialogs.elements.wrapper = $("section .wrapper");
+        page.dialogs.elements.productName = $("#productName");
+        page.dialogs.elements.description = $("#description");
+        page.dialogs.elements.imageFile = $("#imageFile");
+        page.dialogs.elements.wrapperContent = $("section .wrapper .content");
+        page.dialogs.elements.imagePreview = $("section .image-preview");
+        page.dialogs.elements.imagePreviewCanvas = $("section .image-preview canvas");
+        page.dialogs.elements.canvas = $("#canvas");
+        page.dialogs.elements.context = page.dialogs.elements.canvas[0].getContext('2d');
+        page.dialogs.elements.imagePreviewCanvas.css("display", "none");
+        page.dialogs.elements.divImagePreview = $("#modalCreateCustome div.file-name");
+
+        page.dialogs.elements.btnClearImagePreview = $(".clear-image-preview i");
+
+        page.dialogs.elements.imageFileUp = $("#imageFileUp");
+        page.dialogs.elements.imagePreviewCanvasUp = $("section .image-preview #canvasUp");
+        page.dialogs.elements.canvasUp = $("#canvasUp");
+        page.dialogs.elements.contextUp = page.dialogs.elements.canvasUp[0].getContext('2d');
+        page.dialogs.elements.imagePreviewCanvasUp.css("display", "none");
+        page.dialogs.elements.divImagePreviewUp = $("#modalUpdate div.file-name");
+
+        page.loadData.findCustomerById = (id) =>{
+            return $.ajax({
+                type: 'GET',
+                url: page.urls.findCustomerById + '/' + id
+            })       
+            .done((data) => {
+
+
+            })
+            .fail((error) =>{
+
+            })
+        }
+
+        page.loadData.getAllRecipients = (senderId) =>{
+            $.ajax({
+                type: 'GET',
+                url: page.urls.getAllCustomers + '/transfer' + '/' + senderId
+            })
+
+            .done((data)=>{
+                $('#receiverName').empty();
+
+                console.log(data);
+
+                $.each(data,(i, item)=>{
+                    let str = renderRecipientOption(item);
+                    $('#receiverName').append(str)
+                })
+                
+            })
+            .fail((error) =>{
+                console.log(error);
+            })
+        }
+        
+        page.commands.doCreate = () => {
+            let fullName = page.dialogs.elements.fullNameCreateCustomer.val();
+            let email = page.dialogs.elements.emailCreateCustomer.val();
+            let phone = page.dialogs.elements.phoneCreateCustomer.val();
+            let address = page.dialogs.elements.addressCreateCustomer.val();
+
+            let provinceName = $('#provinceCre option:selected').text();
+            let provinceId = $('#provinceCre option:selected').val();
+            
+            let districtId = $('#distristCre option:selected').val();
+            let districtName = $('#distristCre option:selected').text();
+
+            let wardId = $('#wardCre option:selected').val();
+            let wardName = $('#wardCre option:selected').text();
+
+            let avatarFile = page.dialogs.elements.imageFile[0].files[0];
+
+
+            let formData = new FormData();
+
+            formData.append("fullName", fullName);
+            formData.append("email", email);
+            formData.append("phone", phone);
+            formData.append("provinceId", provinceId);
+            formData.append("provinceName", provinceName);
+            formData.append("districtId", districtId);
+            formData.append("districtName", districtName);
+            formData.append("wardId", wardId);
+            formData.append("wardName", wardName);
+            formData.append("address", address);
+            formData.append("file", avatarFile);
+
+            $.ajax({
+                type: 'POST',
+                contentType: false,
+                cache: false,
+                processData: false,
+                url: AppBase.API_CREATE_CUSTOMER,
+                data: formData
+            })
+            .done((data) => {
+
+                customer = data;
+                locationRegion = customer.locationRegion;
+                customerAvatar = customer.customerAvatar;
+
+                let str = renderCustomer(customer, customerAvatar, locationRegion);
+
+            
+                $('#tbCustomers tbody').prepend(str);
+
+                page.dialogs.elements.frmCreateCustomer[0].reset();
+
+                // thông báo thành công
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                     timer: 1500
+                })
+
+                page.dialogs.elements.modalCreate.modal('hide');
+
+                $('.edit').off('click');
+
+                $('.delete').off('click');
+
+                addEventEditClick();
+
+                addEventDeleteClick();
+
+            })
+            .fail((error) =>{
+                console.log(error);
+                if(error.status == 400){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Need more pictures!'
+                    })
+                }
+            })
+        }
+
+        // function addEventDepositClick(){
+        //     $('.deposit').on('click', function(){
+        //         page.elements.modalCRUDAction.modal('hide');
+        //             let customerId = $(this).data('id');
+        //             page.loadData.findCustomerById(customerId).then((customer) =>{
+        //                 if(customer){
+        //                 currentCustomerId = customerId;
+        //                 page.dialogs.elements.fullNameDeposit.val(customer.fullName);
+        //                 page.dialogs.elements.phoneDeposit.val(customer.phone);
+        //                 page.dialogs.elements.balanceDeposit.val(customer.balance);
+        //                 page.dialogs.elements.transactioneAmounDeposit.val(+0);
+        //                 page.dialogs.elements.modalDeposit.modal('show');
+        //             }
+        //         })
+        //     })
+        // }
+        
+        // function addEventWithdrawClick(){
+        //     $('.withdraw').on('click', function(){
+        //         page.elements.modalCRUDAction.modal('hide');
+        //
+        //             let customerId = $(this).data('id');
+        //             page.loadData.findCustomerById(customerId).then((customer) =>{
+        //                 if(customer){
+        //                 currentCustomerId = customerId;
+        //                 $('#fullNameWithdraw').val(customer.fullName);
+        //                 $('#phoneWithdraw').val(customer.phone);
+        //                 $('#balancesWithdraw').val(customer.balance);
+        //                 // $('#transactionAmount').val();
+        //                 $('#modalWithdraw').modal('show');
+        //             }
+        //         })
+        //     })
+        // }
+        
+        // chưa làm chức năng Transfer
+
+        // chưa làm validate
+        // sử dụng framwork jquery validation ở link: https://jqueryvalidation.org/
+        // code validate tham khảo https://github.com/Sen20312123/banking_json
+        // function addEventTransferClick(){
+        //     $('.transfer').on('click', function(){
+        //         page.elements.modalCRUDAction.modal('hide');
+        //         let senderId = $(this).data('id');
+        //
+        //         page.loadData.findCustomerById(senderId).then((sender) =>{
+        //             if(sender){
+        //                 currentCustomerId = senderId;
+        //                 page.loadData.getAllRecipients(senderId);
+        //                 $('#senderName').val(sender.fullName);
+        //                 $('#balancesSender').val(sender.balance);
+        //                 $('#transferTransactionAmount').val(0);
+        //                 $('#transactionAmountTotal').val(0);
+        //                 $('#modalTransfer').modal('show');
+        //             }
+        //         })
+        //     })
+        // }
+        
+        function getAllProvince(){
+            return $.ajax({
+                type: 'GET',
+                url: 'https://vapi.vnappmob.com/api/province/'
+            })
+            .done((province)=>{
+
+            })
+            .fail((error) =>{
+                console.error();
+            })
+        }
+
+        function getAllDistrict(province_id){
+            return $.ajax({
+                type: 'GET',
+                url: 'https://vapi.vnappmob.com/api/province/district/' + province_id
+            })
+            .done((district)=>{
+
+            })
+            .fail((error) =>{
+                console.error();
+            })
+        }
+        
+        function getAllWard(district_id){
+            return $.ajax({
+                type: 'GET',
+                url: 'https://vapi.vnappmob.com/api/province/ward/' + district_id
+            })
+            .done((ward)=>{
+
+            })
+            .fail((error) =>{
+                console.error();
+            })
+        }
+
+        page.dialogs.commands.loadImageToCanvas = (imageFile, fileType ,imageUrl) => {
+            page.dialogs.elements.imagePreviewCanvas.css("display", "");
+            page.dialogs.elements.wrapper.addClass("active");
+            page.dialogs.elements.wrapperContent.css("opacity", 0);
+
+            page.dialogs.elements.imagePreviewCanvasUp.css("display", "");
+            page.dialogs.elements.wrapper.addClass("active");
+            page.dialogs.elements.wrapperContent.css("opacity", 0);
+
+            let imageObj = new Image();
+
+            imageObj.onload = function () {
+                page.dialogs.elements.context.canvas.width = imageObj.width;
+                page.dialogs.elements.context.canvas.height = imageObj.height;
+                page.dialogs.elements.context.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height);
+
+                page.dialogs.elements.contextUp.canvas.width = 445;
+                page.dialogs.elements.contextUp.canvas.height = 345;
+                page.dialogs.elements.contextUp.drawImage(imageObj, 0, 0, 445, 345);
+            };
+
+            if (fileType === "BINARY") {
+                imageObj.src = URL.createObjectURL(imageFile);
+            }
+            else {
+                imageObj.src = imageUrl;
+            }
+        }
+
+        page.dialogs.commands.changeImagePreview = function (elem){
+
+            let imageFile = elem[0].files[0];
+
+            if (imageFile) {
+                let reader = new FileReader();
+
+                reader.readAsDataURL(imageFile);
+
+                reader.onload = function (e) {
+                    if (e.target.readyState === FileReader.DONE) {
+                        page.dialogs.commands.loadImageToCanvas(imageFile, "BINARY", null);
+                    }
+                }
+            }
+            else {
+                page.dialogs.elements.clearImagePreview();
+            }
+        }
+
+        page.dialogs.elements.clearImagePreview = () => {
+            page.dialogs.elements.imageFile.val("");
+            page.dialogs.elements.wrapper.removeClass("active");
+            page.dialogs.elements.wrapperContent.css("opacity", 1);
+            page.dialogs.elements.imagePreviewCanvas.css("display", "none");
+
+            page.dialogs.elements.imageFileUp.val("");
+            page.dialogs.elements.imagePreviewCanvasUp.css("display", "none");
+            page.dialogs.elements.wrapperContent.css("opacity", 1);
+
+        }
+
+        page.commands.doUpdate = () => {
+            let fullName = page.dialogs.elements.fullNameUpdate.val();
+            let email = page.dialogs.elements.emailUpdate.val();
+            let phone = page.dialogs.elements.phoneUpdate.val();
+            let provinceId = page.dialogs.elements.provinceUpdate.val();
+            let provinceName = page.dialogs.elements.provinceUpdate.find("option:selected").text();
+            let districtId = page.dialogs.elements.distristUpdate.val();
+            let districtName = page.dialogs.elements.distristUpdate.find("option:selected").text();
+            let wardId = page.dialogs.elements.wardUpdate.val();
+            let wardName = page.dialogs.elements.wardUpdate.find("option:selected").text();
+            let address = page.dialogs.elements.addressUpdate.val();
+
+            let avatarFile = page.dialogs.elements.imageFileUp[0].files[0];
+
+            console.log(avatarFile);
+
+
+            let formData = new FormData();
+            formData.append("fullName", fullName);
+            formData.append("email", email);
+            formData.append("phone", phone);
+            formData.append("provinceId", provinceId);
+            formData.append("provinceName", provinceName);
+            formData.append("districtId", districtId);
+            formData.append("districtName", districtName);
+            formData.append("wardId", wardId);
+            formData.append("wardName", wardName);
+            formData.append("address", address);
+            formData.append("file", avatarFile);
+
+            $.ajax({
+                type: 'PATCH',
+                contentType: false,
+                cache: false,
+                processData: false,
+                url: page.urls.doUpdateWithAvatar + '/' + currentCustomerId,
+                data: formData
+            })
+                .done((data) => {
+                    let customer = data;
+                    let locationRegion = customer.locationRegion;
+                    let customerAvatar = customer.customerAvatar;
+                    let str = renderCustomer(customer, customerAvatar, locationRegion);
+                    $('#tr_' + currentCustomerId).replaceWith(str);
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                    $('#modalUpdate').modal('hide');
+
+
+                    $('.edit').off('click');
+                    $('.delete').off('click');
+
+                    addEventEditClick();
+
+                    addEventDeleteClick();
+
+                })
+                .fail((error) => {
+                    console.log(error);
+                })
+        }
+
+        function addEventEditClick(){
+            $('.edit').on('click', function(){
+                // page.elements.modalCRUDAction.modal('hide');
+                let customerId = $(this).data('id');
+
+                page.loadData.findCustomerById(customerId).then((customer) =>{
+
+                    if(customer){
+                        currentCustomerId = customerId;
+                        let locationRegion = customer.locationRegion;
+                        let customerAvatar = customer.customerAvatar;
+                        console.log(locationRegion)
+                        page.dialogs.elements.fullNameUpdate.val(customer.fullName);
+                        page.dialogs.elements.emailUpdate.val(customer.email);
+                        page.dialogs.elements.phoneUpdate.val(customer.phone);
+                        page.dialogs.elements.addressUpdate.val(customer.locationRegion.address);
+
+
+
+                        getAllProvince().then((provinces)=>{
+                            $.each(provinces.results, (i,item)=>{
+                                let strProvince = renderProvince(item);
+                                page.dialogs.elements.provinceUpdate.prepend(strProvince);
+                            })
+                            page.dialogs.elements.provinceUpdate.val(locationRegion.provinceId);
+
+                            getAllDistrict(locationRegion.provinceId).then((districts)=>{
+                                $.each(districts.results, (i,item)=>{
+                                    let strDistrict = renderDistrict(item);
+                                    page.dialogs.elements.distristUpdate.prepend(strDistrict);
+                                })
+
+                                changeEventProvince(page.dialogs.elements.provinceUpdate, page.dialogs.elements.distristUpdate)
+
+                                page.dialogs.elements.distristUpdate.val(locationRegion.districtId);
+
+                                page.dialogs.elements.distristUpdate.val()
+
+                                getAllWard(locationRegion.districtId).then((wards)=>{
+                                    $.each(wards.results, (i,item)=>{
+                                        let strDistrict = renderWard(item);
+                                        page.dialogs.elements.wardUpdate.prepend(strDistrict);
+                                    })
+
+                                    changeEventDistrist(page.dialogs.elements.distristUpdate, page.dialogs.elements.wardUpdate);
+
+                                    page.dialogs.elements.wardUpdate.val(locationRegion.wardId);
+                                })
+
+                            })
+                        })
+
+                        page.dialogs.commands.loadImageToCanvas(null, "URL", customerAvatar.fileUrl);
+
+                        page.dialogs.elements.modalUpdate.modal('show');
+                    }
+                });
+
+            })
+        }
+
+        function addEventDeleteClick(){
+            $('.delete').on('click', function(){
+
+                page.elements.modalCRUDAction.modal('hide');
+
+                let customerId = $(this).data('id');
+                page.loadData.findCustomerById(customerId).then((customer) =>{
+                    if(customer){
+                        currentCustomerId = customerId;
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                objDelete = {
+                                    deleted: true
+                                }
+
+                                $.ajax({
+                                    headers: {
+                                        "accept": "application/json",
+                                        "content-type": "application/json"
+                                    },
+                                    type: 'DELETE',
+                                    url: page.urls.doDelete + '/' + currentCustomerId,
+                                    data: JSON.stringify(objDelete)
+                                })
+                                    .done(() => {
+                                        $('#tr_' + currentCustomerId).remove();
+
+                                        Swal.fire(
+                                            'Deleted!',
+                                            'Your file has been deleted.',
+                                            'success'
+                                        )
+                                    })
+                                    .fail((error)=>{
+                                        if (error.status == 403){
+                                            page.commands.alertError("Not authorized");
+                                        }
+                                    })
+                            }
+                        })
+                    }
+
+                })
+            })
+        }
+
+        // page.commands.dbClickShowAction = function (){
+        //     $('tr').dblclick(function (){
+        //         let elemTrId = $(this).attr('id');
+        //         let id = elemTrId.split('_')[1];
+        //
+        //         page.dialogs.elements.showCRUDAction.html("");
+        //
+        //         let str = renderAction(id);
+        //
+        //         page.dialogs.elements.showCRUDAction.prepend(str);
+        //
+        //         $('#modalAction').modal('show');
+        //
+        //         page.commands.offEventBtnClick();
+        //         page.commands.addEventBtnClick();
+
+                // addEventEditClick();
+
+                // addEventDepositClick();
+
+                // addEventWithdrawClick();
+
+                // addEventDeleteClick();
+
+                // addEventTransferClick()
+        //     })
+        // }
+
+        // function renderAction(id){
+        //     return `<a>
+        //                 <button type="button" class="btn btn-dark edit" data-toggle="modal" data-target="#modalUpdate"  data-id="${id}">Edit</button>
+        //             </a>
+        //             <a>
+        //                 <button class="btn btn-outline-danger delete" data-id="${id}">Delete</button>
+        //             </a>
+        //             `
+        //
+        // }
+        
+        function renderCustomer(customer, avatar, locationRegion){
+            let image_thumbnail = `
+                ${AppBase.API_CLOUDINARY}/${AppBase.SCALE_IMAGE_W_80_H_80_Q_85}/${avatar.fileFolder}/${avatar.fileName}
+            `;
+            return `<tr id = "tr_${customer.id}">
+                                    <td>${customer.id}</td>
+                                    <td>
+                                        <img src="${image_thumbnail}" alt="">
+                                    </td>
+                                    <td>${customer.fullName}</td>
+                                    <td>${customer.email}</td>
+                                    <td>${customer.phone}</td>
+                                    <td>${locationRegion.provinceName}</td>
+                                    <td>${locationRegion.districtName}</td>
+                                    <td>${locationRegion.wardName}</td>
+                                    <td>${locationRegion.address}</td>
+                                    <td>
+                                        <a>
+                                            <button type="button" class="btn btn-dark edit" data-toggle="modal"  data-id="${customer.id}">Edit</button>
+                                        </a>
+
+                                        <a>
+                                            <button class="btn btn-outline-danger delete" data-id="${customer.id}">Delete</button>
+                                        </a>
+                                     </td>
+                                </tr>   `
+        }
+        
+        function renderProvince(provinceObj){
+            return `<option id = option_${provinceObj.province_id} value="${provinceObj.province_id}">${provinceObj.province_name}</option>`
+        }
+
+        function renderDistrict(districtObj){
+            return `<option id = option_${districtObj.district_id} value="${districtObj.district_id}">${districtObj.district_name}</option>`
+        }
+        
+        function renderWard(wardtObj){
+            return `<option value="${wardtObj.ward_id}">${wardtObj.ward_name}</option>`
+        }
+
+        function renderRecipientOption(obj){
+            return `<option value="${obj.id}">[${obj.id}] - ${obj.fullName}</option>`
+        }
+        
+        function changeEventDistrist(elementDistrist, elementWard){
+            return elementDistrist.change(function(){
+                    elementWard.empty('');
+                    let districtId = elementDistrist.val();
+                    getAllWard(districtId).then((ward)=>{
+                        $.each(ward.results, (i, item)=>{
+                            let strWard = renderWard(item);
+                            elementWard.prepend(strWard);
+                        })
+                        
+                    })
+                })
+        }
+
+        function changeEventProvince(elementProvince, elementDistrist){
+            
+            return elementProvince.change(function(){
+
+                elementDistrist.empty('');
+                let provinceId = elementProvince.val();
+                getAllDistrict(provinceId).then((district)=>{  
+                    $.each(district.results, (i,item)=>{
+                        let strDistrict = renderDistrict(item);
+                        elementDistrist.prepend(strDistrict);
+                    })
+                })            
+            })
+        }
+        
+        page.commands.addEventChangeTransferAmount = () =>{
+            let transferAmountElem = document.getElementById("transferTransactionAmount");
+            transferAmountElem.addEventListener("input", function (){
+            let transferAmount = +transferAmountElem.value;
+            let fees = 10;
+            let feesAmout = transferAmount * fees / 100;
+            let totalTransAmout = transferAmount + feesAmout;
+            document.getElementById("transactionAmountTotal").value = totalTransAmout;
+            })
+        }
+
+        page.loadData.getAllCustomers =  () =>{
+            $.ajax({
+                type: 'GET',
+                url: page.urls.getAllCustomers
+            })
+            .done((data) => {
+                let customer;
+                let locationRegion;
+                let customerAvatar;
+
+                console.log(data)
+
+                $.each(data, (i, item)=>{
+                    customer = item;
+                    locationRegion = item.locationRegion;
+                    customerAvatar = item.customerAvatar;
+
+
+
+                    let str = renderCustomer(customer, customerAvatar, locationRegion);
+
+                    $('#tbCustomers tbody').prepend(str);
+                })
+
+                $('.edit').off('click');
+
+                $('.delete').off('click');
+
+                addEventEditClick();
+
+                addEventDeleteClick();
+
+
+            })
+
+            .fail((error) =>{
+                console.log(error);
+            })
+        }
+
+        page.elements.btnCreate.on('click', () =>{
+
+            getAllProvince().then((province)=>{
+                $.each(province.results, (i, item)=>{
+                    let str = renderProvince(item);
+                    $('#provinceCre').prepend(str);
+                })
+            })
+
+            changeEventProvince(page.dialogs.elements.provinceCreateCustomer, page.dialogs.elements.distristCreateCustomer);
+
+            changeEventDistrist(page.dialogs.elements.distristCreateCustomer, page.dialogs.elements.wardCreateCustomer);
+
+            page.dialogs.elements.modalCreate.modal('show');
+
+        })
+        
+        page.dialogs.elements.btnSaveCreate.on('click', function(){
+            page.commands.doCreate();
+        })
+
+        
+        page.commands.loadData = () =>{
+
+            page.loadData.getAllCustomers();
+
+            // page.loadData.findCustomerById();
+        }
+
+        page.initializeControlEvent = function () {
+
+            // page.dialogs.elements.btnDeposit.on('click', function(){
+            // let transactionAmount = page.dialogs.elements.transactioneAmounDeposit.val();
+            //
+            // if(transactionAmount < 0){
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'ERROR!!!',
+            //         text: 'Số tiền nạp không đúng.',
+            //
+            //     });
+            //     return;
+            // }
+            //
+            // let objDeposit = {
+            //     transactionAmount
+            //     };
+            //
+            // page.loadData.findCustomerById(currentCustomerId).then((customer) => {
+            //
+            //     $.ajax({
+            //         headers: {
+            //             'accept': 'application/json',
+            //             'content-type': 'application/json'
+            //         },
+            //         type: 'POST',
+            //         url: page.urls.deposit + '/' + currentCustomerId,
+            //         data: JSON.stringify(objDeposit)
+            //     })
+            //     .done((data) => {
+            //         let str = renderCustomer(data);
+            //
+            //         $('#tr_' + data.id).replaceWith(str);
+            //
+            //         page.commands.dbClickShowAction();
+            //
+            //         Swal.fire({
+            //             position: 'center',
+            //             icon: 'success',
+            //             title: 'Your work has been saved',
+            //             showConfirmButton: false,
+            //             timer: 1500
+            //         })
+            //
+            //     })
+            //     .fail((error) => {
+            //         console.log(error.text);
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'Oops...',
+            //             text: error.text,
+            //         })
+            //     })
+            //
+            //     page.dialogs.elements.modalDeposit.modal('hide');
+            //
+            //     })
+            // })
+
+            page.dialogs.elements.btnUpdate.on('click', function () {
+                page.commands.doUpdate();
+            })
+
+            page.dialogs.elements.divImagePreview.on('click', () => {
+                page.dialogs.elements.imageFile.trigger('click');
+            })
+
+            page.dialogs.elements.divImagePreviewUp.on('click', () => {
+                page.dialogs.elements.imageFileUp.trigger('click');
+            })
+
+            page.dialogs.elements.imageFile.on("change", function () {
+                page.dialogs.commands.changeImagePreview(page.dialogs.elements.imageFile);
+            });
+
+            page.dialogs.elements.imageFileUp.on("change", function () {
+                page.dialogs.commands.changeImagePreview(page.dialogs.elements.imageFileUp);
+            });
+
+            page.dialogs.elements.btnClearImagePreview.on('click', () => {
+                page.dialogs.commands.clearImagePreview();
+            })
+
+
+
+            // page.elements.btnWithdraw.on('click', function(){
+            //     let transactionAmount = $('#withdrawAmount').val();
+            //     let objWithdraw = {
+            //         transAmount: transactionAmount
+            //         };
+            //
+            //     if (transactionAmount<0){
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'Oops...',
+            //             text: "Sai số tiền"
+            //         })
+            //         return;
+            //     }
+            //
+            //     page.loadData.findCustomerById(currentCustomerId).then((customer) => {
+            //     $.ajax({
+            //         headers: {
+            //             'accept': 'application/json',
+            //             'content-type': 'application/json'
+            //         },
+            //         type: 'POST',
+            //         url: page.urls.withdraw + '/' + currentCustomerId,
+            //         data: JSON.stringify(objWithdraw)
+            //     })
+            //     .done((data) => {
+            //
+            //         let str = renderCustomer(data);
+            //
+            //         $('#tr_' + data.id).replaceWith(str);
+            //
+            //         page.commands.dbClickShowAction();
+            //
+            //         $('#withdrawAmount').val(0);
+            //         $('#modalWithdraw').modal('hide');
+            //
+            //         Swal.fire({
+            //             position: 'center',
+            //             icon: 'success',
+            //             title: 'Rút tiền thành công',
+            //             showConfirmButton: false,
+            //             timer: 1500
+            //         })
+            //
+            //     })
+            //     .fail((error) => {
+            //
+            //         console.log(error);
+            //
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'Oops...',
+            //             text: error.responseText
+            //         })
+            //
+            //         })
+            //     })
+            // })
+
+            //     page.elements.btnTransfer.on('click', function(){
+            //         let recipientId = $('#receiverName option:selected').val();
+            //         let transferAmount = $('#transferTransactionAmount').val();
+            //         let fees = 10;
+            //         let objTransfer = {
+            //             recipientId,
+            //             transferAmount,
+            //             fees
+            //         }
+            //
+            //         if(transferAmount<0){
+            //             Swal.fire({
+            //                     position: 'center',
+            //                     icon: 'error',
+            //                     title: 'Sai số tiền giao dịch',
+            //                     showConfirmButton: true
+            //                 })
+            //             return;
+            //         }
+            //
+            //         $.ajax({
+            //             headers:{
+            //                 'accept': 'application/json',
+            //                 'content-type': 'application/json'
+            //             },
+            //             type: 'POST',
+            //             url: page.urls.transfer + '/' + currentCustomerId,
+            //             data: JSON.stringify(objTransfer)
+            //         })
+            //         .done((data)=>{
+            //
+            //             let senderId = data.senderId;
+            //             let recipientId = data.recipientId;
+            //
+            //             page.loadData.findCustomerById(senderId).then((sender)=>{
+            //                 let str = renderCustomer(sender);
+            //                 $('#tr_' + senderId).replaceWith(str);
+            //
+            //                 page.commands.dbClickShowAction();
+            //             })
+            //
+            //             page.loadData.findCustomerById(recipientId).then((recipient)=>{
+            //                 let str = renderCustomer(recipient);
+            //                 $('#tr_' + recipientId).replaceWith(str);
+            //
+            //                 page.commands.dbClickShowAction();
+            //             })
+            //
+            //             $('#modalTransfer').modal('hide');
+            //
+            //             $('#transactionAmountTotal').val(0);
+            //
+            //             $('#transferTransactionAmount').val(0);
+            //
+            //             Swal.fire({
+            //                 position: 'center',
+            //                 icon: 'success',
+            //                 title: 'Successful transactiond',
+            //                 showConfirmButton: false,
+            //                 timer: 1500
+            //             })
+            //
+            //         })
+            //
+            //         .fail((error)=>{
+            //             if (error.status == 406){
+            //                 page.commands.alertError(error.responseText);
+            //             }
+            //         })
+            //     })
+            //
+            // }
+        }
+
+        $(()=>{
+
+            page.commands.loadData();
+
+            page.initializeControlEvent();
+
+            // page.commands.addEventChangeTransferAmount();
+            
+        });
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Admin Dashboard" name="description">
+        <meta content="ThemeDesign" name="author">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>Log in</title>
+
+        <link href="assets\css\bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="assets\css\icons.css" rel="stylesheet" type="text/css">
+        <link href="assets\css\style.css" rel="stylesheet" type="text/css">
+
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="/assets/js/AppBase.js"></script>
+
+    </head>
+
+
+    <body>
+
+        <!-- Begin page -->
+        <div class="accountbg"></div>
+        <div class="wrapper-page">
+            <div class="card">
+
+                <div class="card-body">
+                    <h4 class="text-muted text-center m-t-0"><b>Sign In</b></h4>
+
+                    <form class="form-horizontal m-t-20" action="">
+
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input id="usernameLog" class="form-control" type="text"  placeholder="Username">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input id="passwordLog" class="form-control" type="password" placeholder="Password">
+                            </div>
+                        </div>
+
+<!--                        <div class="form-group">-->
+<!--                            <div class="col-12">-->
+<!--                                <div class="checkbox checkbox-primary">-->
+<!--                                    <input id="checkbox-signup" type="checkbox" checked="">-->
+<!--                                    <label for="checkbox-signup">-->
+<!--                                        Remember me-->
+<!--                                    </label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="form-group text-center m-t-40">
+                            <div class="col-12">
+                                <button id="btnLogIn" class="btn btn-primary btn-block btn-lg waves-effect waves-light" type="button">Log In</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!-- jQuery  -->
+
+
+        <script>
+
+            const page = {
+                    urls: {
+                        authLogin: AppBase.API_AUTH + '/login',
+                    },
+                    elements: {},
+                    loadData: {},
+                    commands: {}
+                }
+
+            page.commands.alertError = function (message){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'error' ,
+                    text: message,
+                })
+            }
+
+            page.commands.alertSuccess = function (message){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+
+            page.elements.usernameLog = $('#usernameLog');
+            page.elements.passwordLog = $('#passwordLog');
+            page.elements.btnLogIn = $('#btnLogIn');
+
+            page.elements.btnLogIn.on('click', function (){
+
+                let username = page.elements.usernameLog.val();
+                let password = page.elements.passwordLog.val();
+
+                let objLogin={
+                    username,
+                    password
+                }
+
+                $.ajax({
+                    headers:{
+                        'accept': 'application/json',
+                        'content-type': 'application/json'
+                    },
+                    type: 'POST',
+                    url: page.urls.authLogin,
+                    data: JSON.stringify(objLogin)
+                })
+                    .done((data)=> {
+
+                        page.commands.alertSuccess('Logged in successfully');
+
+                        location.href = '/customers'
+                    })
+                    .fail((jqXHR)=>{
+                        if(jqXHR.status == 401){
+                            page.commands.alertError( 'Login fail!');
+                        }
+                    })
+            })
+
+
+            $(()=>{
+
+            })
+
+        </script>
+
+    </body>
+</html>
